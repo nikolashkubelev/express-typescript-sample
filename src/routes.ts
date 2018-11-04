@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import sources from './sources';
-import HomeController from './controllers/home';
+import { homeController } from './controllers';
 
 
 const router = express.Router();
@@ -16,10 +16,10 @@ router.get(sources.index, (_req: Request, res: Response) => {
 });
 
 /**
- * GET /
+ * GET /home
  * Home
  */
-router.get(sources.home, HomeController.index);
+router.get(sources.home, homeController.index);
 
 
 export default router;

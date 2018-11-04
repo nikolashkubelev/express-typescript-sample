@@ -1,26 +1,41 @@
-import express from 'express';
+import express, { Application, Router } from 'express';
 import router from './routes';
 
-class App {
-  public express: express.Application;
 
-  // Run configuration methods on the Express instance.
-  constructor() {
-    this.express = express();
+class Example {
+  public app: Application;
+
+  constructor(
+    private router: Router,
+    private express: any // TODO: WTT?
+  ) {
+    this.init();
+    this.config();
     this.middleware();
     this.routes();
   }
 
+  // Init Express
+  private init() {
+    this.app = this.express();
+  }
+
+  // Configure Express.
+  private config(): void {
+    this.app.set('port', process.env.PORT || 3000);
+  }
+
   // Configure Express middleware.
   private middleware(): void {
-    this.express.set('port', process.env.PORT || 3000);
-    this.express.use(express.urlencoded({ extended: false }));
+    this.app.use(this.express.json());
+    this.app.use(this.express.urlencoded({ extended: false }));
   }
 
   // Configure API endpoints.
   private routes(): void {
-    this.express.use(router);
+    this.app.use(this.router);
   }
 }
 
-export default new App().express;
+
+export default new Example(router, express).app;
